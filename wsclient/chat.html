@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+<h1>web socket test</h1>
+<form>
+<input type="button" id="connectButton" value="connect">
+<input type="button" id="disconnectButton" value="disconnect"><br>
+<textarea id="msgs" readonly cols="30" rows="10"></textarea><br>
+<input id="name" type="text" size="6" placeholder="your name">
+<input id="msg" type="text" size="20" placeholder="message">
+<input type="button" id="sendButton" value="submit">
+<script type="text/javascript">
+
+var ws = null;
+
+document.getElementById('connectButton').addEventListener('click', function() {
+	ws = new WebSocket("ws://localhost/chat");
+	ws.onopen = function (event) {
+		console.log(event);
+		// document.getElementById('btn').disabled = false;
+	};
+	ws.onmessage = function (event) {
+		document.getElementById('msgs').textContent += event.data + "\n";
+	};
+	ws.onerror = function (event) {
+		console.log(event);
+	};
+	ws.onclose = function (event) {
+		console.log(event);
+		// document.getElementById('btn').disabled = true;
+	};
+
+}, false);
+
+document.getElementById('disconnectButton').addEventListener('click', function() {
+	ws.close();
+	ws = null;
+}, false);
+
+document.getElementById('sendButton').addEventListener('click', function() {
+	var n = document.getElementById('name').value;
+	var m = document.getElementById('msg').value;
+	console.log(ws);
+	ws.send(n + '>' + m);
+}, false);
+
+window.addEventListener('load', function() {
+
+}, false);
+
+</script>
+</form>
+</body>
+</html>
