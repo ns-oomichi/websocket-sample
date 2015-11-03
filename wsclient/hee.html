@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hee inspired</title>
+<style>
+    #heeLabel {
+        font-size: 10em;
+    }
+</style>
+<script type="text/javascript">
+var ws = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    ws = new WebSocket('ws://localhost/hee');
+    ws.onopen = function(event) {
+        console.log(event);
+    };
+    ws.onclose = function(event) {
+        console.log(event);
+        ws.close();
+        ws = null;
+    };
+    ws.onmessage = function(event) {
+        console.log(event);
+        document.getElementById('heeLabel').textContent = event.data;
+    };
+    ws.onerror = function(event) {
+        console.log(event);
+    };
+
+    document.getElementById('heeButton').addEventListener('click', function() {
+        document.getElementById('v').value = 1;
+        ws.send('1');
+    }, false);
+
+    document.getElementById('resetButton').addEventListener('click', function() {
+        document.getElementById('v').value = 0;
+        ws.send('0');
+    }, false);
+}, false);
+
+</script>
+</head>
+<body>
+    <h1>Hee button inspired</h1>
+    <div>
+        <form>
+            <div><span id="heeLabel">0</span> へぇ</div>
+            <div>
+                <input type="text" id="v" name="v" value="0">
+                <input type="button" id="heeButton" value="へぇ">
+            </div>
+        </form>
+    </div>
+
+    <br><br><br><br><br><br><br><br><br>
+    <input type="button" id="resetButton" value="reset">
+</body>
+</html>
+
